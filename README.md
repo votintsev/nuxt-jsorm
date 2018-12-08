@@ -11,6 +11,5 @@
 ## TODO:
 
  - README
- - utilize @nuxtjs/auth config variables from nuxt.config.js
  - provide examples
  - tests
