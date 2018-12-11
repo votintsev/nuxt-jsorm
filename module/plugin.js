@@ -80,7 +80,6 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
   }
 
   orm.serializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, getClassName }) {
-    console.log()
     let ret = {
       attributes: Object.assign({}, attributes),
       relationships: {},
