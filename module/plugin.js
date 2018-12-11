@@ -30,7 +30,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
   }).join('\n\n  ')
   %>
 
-  const deserializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors }, model) {
+  orm.deserializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors }, model) {
     let retRelationships = {}, attrs
 
     if(Object.keys(relationships).length > 0) {
@@ -42,7 +42,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
         const relatedItems = relationships[relationship]
 
         for (const relatedItem in relatedItems) {
-          retRelationships[relationship].push(deserializeModel(relatedItems[relatedItem], nuxtState.state[relationship].jsorm))
+          retRelationships[relationship].push(orm.deserializeModel(relatedItems[relatedItem], nuxtState.state[relationship].jsorm))
         }
       }
       attrs = Object.assign({}, attributes, retRelationships)
@@ -61,7 +61,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
     return ret
   }
 
-  const serializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors }, model) {
+  orm.serializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors }, model) {
     let ret = {
       attributes: Object.assign({}, attributes),
       relationships: {},
@@ -69,7 +69,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
       isPersisted,
       isMarkedForDestruction,
       isMarkedForDisassociation,
-      serializedByNuxtJsOrm: true,
+      isSerializedByNuxtJsOrm: true,
       errors: Object.assign({}, errors)
     }
     if(Object.keys(relationships).length < 1) {
@@ -84,19 +84,19 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
       const relatedItems = relationships[relationship]
 
       for (const relatedItem in relatedItems) {
-        ret.relationships[relationship].push(serializeModel(relatedItems[relatedItem], model))
+        ret.relationships[relationship].push(orm.serializeModel(relatedItems[relatedItem], model))
       }
     }
 
     return ret
   }
 
-  const isJSORMObject = function(item) {
+  orm.isJSORMObject = function(item) {
     if (typeof item !== "object") {
       return false
     }
 
-    if (typeof item.serializedByNuxtJsOrm !== "undefined") {
+    if (typeof item.isSerializedByNuxtJsOrm !== "undefined") {
       return true
     }
 
@@ -118,25 +118,25 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
           const accountData = moduleState.by_account[accountId]
           if (typeof accountData[storeModule] === "undefined") continue
           for (const itemId in accountData[storeModule]) {
-            if (!isJSORMObject(accountData[storeModule][itemId])) {
+            if (!orm.isJSORMObject(accountData[storeModule][itemId])) {
               continue
             }
-            state[storeModule].by_account[accountId][storeModule][itemId] = serializeFunction(accountData[storeModule][itemId], moduleState.jsorm)
+            state[storeModule].by_account[accountId][storeModule][itemId] = orm[serializeFunction](accountData[storeModule][itemId], moduleState.jsorm)
           }
         }
       } else if (typeof moduleState[storeModule] !== "undefined") {
         for (const itemId in moduleState[storeModule]) {
-          if (!isJSORMObject(moduleState[storeModule][itemId])) {
+          if (!orm.isJSORMObject(moduleState[storeModule][itemId])) {
             continue
           }
-          state[storeModule][storeModule][itemId] = serializeFunction(moduleState[storeModule][itemId], moduleState.jsorm)
+          state[storeModule][storeModule][itemId] = orm[serializeFunction](moduleState[storeModule][itemId], moduleState.jsorm)
         }
       } else {
         for (const itemId in moduleState) {
-          if (!isJSORMObject(moduleState[itemId])) {
+          if (!orm.isJSORMObject(moduleState[itemId])) {
             continue
           }
-          state[storeModule][itemId] = serializeFunction(moduleState[itemId], moduleState.jsorm)
+          state[storeModule][itemId] = orm[serializeFunction](moduleState[itemId], moduleState.jsorm)
         }
       }
     }
