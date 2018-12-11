@@ -121,7 +121,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
             if (!orm.isJSORMObject(accountData[storeModule][itemId])) {
               continue
             }
-            state[storeModule].by_account[accountId][storeModule][itemId] = orm[serializeFunction](accountData[storeModule][itemId], moduleState.jsorm)
+            state[storeModule].by_account[accountId][storeModule][itemId] = serializeFunction(accountData[storeModule][itemId], moduleState.jsorm)
           }
         }
       } else if (typeof moduleState[storeModule] !== "undefined") {
@@ -129,14 +129,14 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
           if (!orm.isJSORMObject(moduleState[storeModule][itemId])) {
             continue
           }
-          state[storeModule][storeModule][itemId] = orm[serializeFunction](moduleState[storeModule][itemId], moduleState.jsorm)
+          state[storeModule][storeModule][itemId] = serializeFunction(moduleState[storeModule][itemId], moduleState.jsorm)
         }
       } else {
         for (const itemId in moduleState) {
           if (!orm.isJSORMObject(moduleState[itemId])) {
             continue
           }
-          state[storeModule][itemId] = orm[serializeFunction](moduleState[itemId], moduleState.jsorm)
+          state[storeModule][itemId] = serializeFunction(moduleState[itemId], moduleState.jsorm)
         }
       }
     }
@@ -144,11 +144,11 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
 
   if (process.server) {
     beforeNuxtRender(function() {
-      handleSerialization(store.state, serializeModel)
+      handleSerialization(store.state, orm.serializeModel)
     })
   } else if (process.client) {
     let clonedState = JSON.parse(JSON.stringify(nuxtState.state))
-    handleSerialization(clonedState, deserializeModel)
+    handleSerialization(clonedState, orm.deserializeModel)
     store.replaceState(clonedState)
   }
 
