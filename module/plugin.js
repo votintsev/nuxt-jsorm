@@ -68,7 +68,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
   }
 
   if (process.server) {
-    beforeNuxtRender(function(something) {
+    beforeNuxtRender(function() {
       handleSerialization(store.state, serializeModel)
     })
   } else if (process.client) {

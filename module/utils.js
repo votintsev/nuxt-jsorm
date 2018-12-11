@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { JSORMBase } from 'jsorm'
 
-deserializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, model }) {
+const deserializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, model }) {
   let retRelationships = {}, attrs
 
   if(Object.keys(relationships).length > 0) {
@@ -32,7 +32,7 @@ deserializeModel = function({ attributes, relationships, id, isPersisted, isMark
   return ret
 }
 
-deserialize = function(data, model) {
+const deserialize = function(data, model) {
   if(isJSORMObject(data)) {
     if(data.isSerializedByNuxtJsOrm) {
       data = deserializeModel(data, model)
@@ -50,7 +50,7 @@ deserialize = function(data, model) {
   return data
 }
 
-serializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, getClassName }) {
+const serializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, getClassName }) {
   let ret = {
     attributes: Object.assign({}, attributes),
     relationships: {},
@@ -81,7 +81,7 @@ serializeModel = function({ attributes, relationships, id, isPersisted, isMarked
   return ret
 }
 
-isJSORMObject = function(item) {
+const isJSORMObject = function(item) {
   if (typeof item !== "object") {
     return false
   }

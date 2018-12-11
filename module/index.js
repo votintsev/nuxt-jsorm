@@ -33,13 +33,20 @@ function validateOptions(options) {
 
 function copyPlugin(options) {
   // Copy orm plugin
-  const { dst } = this.addTemplate({
+  const pluginFile = this.addTemplate({
     src: resolve(__dirname, 'plugin.js'),
     fileName: join('orm', 'plugin.js'),
     options
   })
   if (!this.options.auth.plugins) this.options.auth.plugins = []
-  this.options.auth.plugins.push(resolve(this.options.buildDir, dst))
+  this.options.auth.plugins.push(resolve(this.options.buildDir, pluginFile.dst))
+
+  const utilsFile = this.addTemplate({
+    src: resolve(__dirname, 'utils.js'),
+    fileName: join('orm', 'utils.js'),
+    options
+  })
+  this.options.auth.plugins.push(resolve(this.options.buildDir, utilsFile.dst))
 }
 
 function processModels(options) {
