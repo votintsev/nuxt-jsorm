@@ -30,7 +30,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
   }).join('\n\n  ')
   %>
 
-  orm.deserializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors }, model) {
+  orm.deserializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, model }) {
     let retRelationships = {}, attrs
 
     if(Object.keys(relationships).length > 0) {
@@ -42,7 +42,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
         const relatedItems = relationships[relationship]
 
         for (const relatedItem in relatedItems) {
-          retRelationships[relationship].push(orm.deserializeModel(relatedItems[relatedItem], nuxtState.state[relationship].jsorm))
+          retRelationships[relationship].push(orm.deserializeModel(relatedItems[relatedItem]))
         }
       }
       attrs = Object.assign({}, attributes, retRelationships)
@@ -61,7 +61,26 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
     return ret
   }
 
-  orm.serializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors }, model) {
+  orm.deserialize = function(data, model) {
+    if(orm.isJSORMObject(data)) {
+      if(data.isSerializedByNuxtJsOrm) {
+        data = orm.deserializeModel(data, model)
+      }
+    } else if(typeof data === "object") {
+      for (const item in data) {
+        if(orm.isJSORMObject(data[item])) {
+          if(data[item].isSerializedByNuxtJsOrm) {
+            data[item] = orm.deserializeModel(data[item], model)
+          }
+        }
+      }
+    }
+
+    return data
+  }
+
+  orm.serializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, getClassName }) {
+    console.log()
     let ret = {
       attributes: Object.assign({}, attributes),
       relationships: {},
@@ -70,6 +89,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
       isMarkedForDestruction,
       isMarkedForDisassociation,
       isSerializedByNuxtJsOrm: true,
+      model: getClassName(),
       errors: Object.assign({}, errors)
     }
     if(Object.keys(relationships).length < 1) {
@@ -84,7 +104,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
       const relatedItems = relationships[relationship]
 
       for (const relatedItem in relatedItems) {
-        ret.relationships[relationship].push(orm.serializeModel(relatedItems[relatedItem], model))
+        ret.relationships[relationship].push(orm.serializeModel(relatedItems[relatedItem]))
       }
     }
 
@@ -143,7 +163,7 @@ export default function ({ app, nuxtState, beforeNuxtRender, store }, inject) {
   }
 
   if (process.server) {
-    beforeNuxtRender(function() {
+    beforeNuxtRender(function(something) {
       handleSerialization(store.state, orm.serializeModel)
     })
   } else if (process.client) {
