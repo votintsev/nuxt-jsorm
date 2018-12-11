@@ -1,6 +1,6 @@
 {
   "name": "nuxt-jsorm",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Inject JSORM Models into Nuxt's Context",
   "keywords": [
     "jsorm",
