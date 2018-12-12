@@ -1,5 +1,6 @@
 const { resolve, join } = require('path')
 const { existsSync, readdirSync } = require('fs')
+const fsExtra = require('fs-extra')
 const merge = require('lodash/merge')
 const filter = require('lodash/filter')
 const consola = require('consola')
@@ -17,7 +18,6 @@ module.exports = function (moduleOptions) {
 
   // Process and normalize models
   options.models = processModels.call(this, options)
-
   // Copy plugin
   copyPlugin.call(this, options)
 }
@@ -32,6 +32,18 @@ function validateOptions(options) {
 }
 
 function copyPlugin(options) {
+  this.addTemplate({
+    src: resolve(__dirname, 'dynamic_models.js'),
+    fileName: join('orm', 'models.js'),
+    options
+  })
+
+  this.addTemplate({
+    src: resolve(__dirname, 'utils.js'),
+    fileName: join('orm', 'utils.js'),
+    options
+  })
+
   // Copy orm plugin
   const pluginFile = this.addTemplate({
     src: resolve(__dirname, 'plugin.js'),
@@ -40,13 +52,6 @@ function copyPlugin(options) {
   })
   if (!this.options.auth.plugins) this.options.auth.plugins = []
   this.options.auth.plugins.push(resolve(this.options.buildDir, pluginFile.dst))
-
-  const utilsFile = this.addTemplate({
-    src: resolve(__dirname, 'utils.js'),
-    fileName: join('orm', 'utils.js'),
-    options
-  })
-  this.options.auth.plugins.push(resolve(this.options.buildDir, utilsFile.dst))
 }
 
 function processModels(options) {

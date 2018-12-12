@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { JSORMBase } from 'jsorm'
+import orm from './models'
 
 const deserializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, model }) {
   let retRelationships = {}, attrs
@@ -22,7 +23,6 @@ const deserializeModel = function({ attributes, relationships, id, isPersisted, 
   }
 
   let ret = new orm[model](attrs)
-
   ret.id = id
   ret.isPersisted = isPersisted
   ret.isMarkedForDestruction = isMarkedForDestruction
@@ -97,11 +97,45 @@ const isJSORMObject = function(item) {
   return false
 }
 
-let utils_esm = {
-  deserializeModel,
-  deserialize,
-  serializeModel,
-  isJSORMObject
+const handleStoreHydration = function(state, serializeFunction) {
+  if (serializeFunction == 'serialize') {
+    serializeFunction = serializeModel
+  } else {
+    serializeFunction = deserializeModel
+  }
+  for (const storeModule in state) {
+    const moduleState = state[storeModule]
+    if (typeof moduleState.jsorm !== "string") {
+      continue
+    }
+    if (typeof moduleState.by_account !== "undefined") {
+      for (const accountId in moduleState.by_account) {
+        const accountData = moduleState.by_account[accountId]
+        if (typeof accountData[storeModule] === "undefined") continue
+        for (const itemId in accountData[storeModule]) {
+          if (!isJSORMObject(accountData[storeModule][itemId])) {
+            continue
+          }
+          state[storeModule].by_account[accountId][storeModule][itemId] = serializeFunction(accountData[storeModule][itemId], moduleState.jsorm)
+        }
+      }
+    } else if (typeof moduleState[storeModule] !== "undefined") {
+      for (const itemId in moduleState[storeModule]) {
+        if (!isJSORMObject(moduleState[storeModule][itemId])) {
+          continue
+        }
+        state[storeModule][storeModule][itemId] = serializeFunction(moduleState[storeModule][itemId], moduleState.jsorm)
+      }
+    } else {
+      for (const itemId in moduleState) {
+        if (!isJSORMObject(moduleState[itemId])) {
+          continue
+        }
+        state[storeModule][itemId] = serializeFunction(moduleState[itemId], moduleState.jsorm)
+      }
+    }
+  }
 }
-export { deserializeModel, deserialize, serializeModel, isJSORMObject }
-export default utils_esm
+const index = { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }
+export { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }
+export default index
