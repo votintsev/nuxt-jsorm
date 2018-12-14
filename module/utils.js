@@ -12,9 +12,12 @@ const deserializeModel = function({ attributes, relationships, id, isPersisted, 
       }
 
       const relatedItems = relationships[relationship]
-
-      for (const relatedItem in relatedItems) {
-        retRelationships[relationship].push(deserializeModel(relatedItems[relatedItem]))
+      if (Array.isArray(relatedItems)) {
+        for (const relatedItem in relatedItems) {
+          retRelationships[relationship].push(deserializeModel(relatedItems[relatedItem]))
+        }
+      } else {
+        retRelationships[relationship] = deserializeModel(relatedItems)
       }
     }
     attrs = Object.assign({}, attributes, retRelationships)
@@ -66,15 +69,18 @@ const serializeModel = function({ attributes, relationships, id, isPersisted, is
     return ret
   }
 
+
   for (const relationship in relationships) {
     if (typeof ret.relationships[relationship] === "undefined") {
       ret.relationships[relationship] = []
     }
-
     const relatedItems = relationships[relationship]
-
-    for (const relatedItem in relatedItems) {
-      ret.relationships[relationship].push(serializeModel(relatedItems[relatedItem]))
+    if (Array.isArray(relatedItems)) {
+      for (const relatedItem in relatedItems) {
+        ret.relationships[relationship].push(serializeModel(relatedItems[relatedItem]))
+      }
+    } else {
+      ret.relationships[relationship] = serializeModel(relatedItems)
     }
   }
 
