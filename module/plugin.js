@@ -28,7 +28,7 @@ const plugin = function (ctx, inject) {
       try {
         store.commit(`${editedModule}/replace`, clonedState[editedModule])
       } catch (err) {
-        console.log(`[nuxt-jsorm]: no 'replace' mutation on vuex module '${editedModule}'.`)
+        console.error(`[nuxt-jsorm]: no 'replace' mutation on vuex module '${editedModule}'.`)
       }
     }
   }
