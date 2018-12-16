@@ -23,19 +23,19 @@ jobs:
       - checkout
 
       # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1.1.11-dependencies-{{ checksum "package.json" }}
+      #- restore_cache:
+        #  keys:
+        #  - v1.1.11-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1.1.11-dependencies-
+         # - v1.1.11-dependencies-
 
      # - run: yarn global add codecov
       - run: npm install
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1.1.11-dependencies-{{ checksum "package.json" }}
+    #  - save_cache:
+       #   paths:
+       #     - node_modules
+      #    key: v1.1.11-dependencies-{{ checksum "package.json" }}
 
       # run tests!
       - run: npm run test
