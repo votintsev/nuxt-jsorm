@@ -145,6 +145,6 @@ const handleStoreHydration = function(state, serializeFunction) {
   }
   return editedModules
 }
-const index = { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }
+const utils = { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }
 export { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }
-export default index
+export default utils

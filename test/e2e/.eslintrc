@@ -1,0 +1,18 @@
+{
+  "env": {
+    "jest/globals": true
+  },
+  "plugins": ["jest"],
+  "globals": {
+    "browser": false,
+    "BASE_URL": false
+  },
+  "extends": ["plugin:jest/recommended"],
+  "rules": {
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
+  }
+}

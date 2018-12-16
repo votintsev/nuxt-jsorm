@@ -12,7 +12,7 @@ let orm = {
 options.models.map(({ model, path, base }) => {
   if(base) return ''
   return `// ${model}\norm.${model} = Create${model}Model(orm.${options.parentModel}, jsorm)`
-}).join('\n\n  ')
+}).join('\n\n')
 %>
 
-module.exports = orm
+export default orm

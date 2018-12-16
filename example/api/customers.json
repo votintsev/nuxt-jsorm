@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "type": "customers",
+      "id": "1",
+      "attributes": {
+        "name": "John Doe",
+        "created_at": "2018-12-15 20:16:19",
+        "updated_at": "2018-12-15 20:16:19"
+      }
+    },
+    {
+      "type": "customers",
+      "id": "2",
+      "attributes": {
+        "name": "Jane Doe",
+        "created_at": "2018-12-15 20:16:19",
+        "updated_at": "2018-12-15 20:16:19"
+      }
+    }
+  ],
+  "links": {
+    "self": "http://localhost:3001/api/customers"
+  },
+  "jsonapi": {
+    "version": "1.0"
+  }
+}

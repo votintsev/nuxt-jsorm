@@ -1,0 +1,18 @@
+{
+  "name": "nuxt-jsorm-example",
+  "version": "1.0.0",
+  "description": "Example project for nuxt-jsorm",
+  "author": "Clickagy",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt --port 3030",
+    "install-link": "npm install && npm link nuxt-jsorm"
+  },
+  "dependencies": {
+    "@nuxtjs/auth": "^4.5.3",
+    "@nuxtjs/axios": "^5.3.6",
+    "isomorphic-fetch": "^2.2.1",
+    "nuxt": "^2.0.0",
+    "nuxt-jsorm": "^1.1.10"
+  }
+}

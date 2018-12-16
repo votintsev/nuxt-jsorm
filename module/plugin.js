@@ -2,11 +2,9 @@
 import Vue from 'vue'
 import { JSORMVue } from 'jsorm-vue'
 import { handleStoreHydration } from './utils'
-import * as orm from './models'
+import orm from './models'
+require('es6-promise').polyfill()
 require('isomorphic-fetch')
-var jsorm = require('jsorm')
-
-<%= options.models.map(({ model, path }) => `import Create${model}Model from '${path.replace(/\\/g,'/')}'`).join('\n') %>
 
 Vue.use(JSORMVue)
 
