@@ -26,8 +26,8 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: npm i -g codecov
-      - run: npm i
+      - run: yarn global add codecov
+      - run: npm install
 
       - save_cache:
           paths:
@@ -35,5 +35,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm test
+      - run: npm run test
       - run: codecov
