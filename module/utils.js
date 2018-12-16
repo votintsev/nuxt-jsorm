@@ -104,6 +104,7 @@ const isJSORMObject = function(item) {
 }
 
 const handleStoreHydration = function(state, serializeFunction) {
+  let editedModules = []
   if (serializeFunction == 'serialize') {
     serializeFunction = serializeModel
   } else {
@@ -114,6 +115,7 @@ const handleStoreHydration = function(state, serializeFunction) {
     if (typeof moduleState.jsorm !== "string") {
       continue
     }
+    editedModules.push(storeModule)
     if (typeof moduleState.by_account !== "undefined") {
       for (const accountId in moduleState.by_account) {
         const accountData = moduleState.by_account[accountId]
@@ -141,6 +143,7 @@ const handleStoreHydration = function(state, serializeFunction) {
       }
     }
   }
+  return editedModules
 }
 const index = { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }
 export { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }

@@ -12,10 +12,9 @@ Vue.use(JSORMVue)
 
 const plugin = function (ctx, inject) {
   const { app, nuxtState, beforeNuxtRender, store } = ctx
-  const loggedIn = app.store.$auth.$state.loggedIn
-  const token = app.store.$auth.$state['<%= options.authTokenKey %>']
-
-  orm.<%= options.parentModel %>.jwt = token
+  if (app.$auth && app.$auth.loggedIn && app.$auth.$state) {
+    orm.<%= options.parentModel %>.jwt = app.$auth.$state['<%= options.authTokenKey %>']
+  }
 
   if (process.server) {
     beforeNuxtRender(function() {
@@ -23,8 +22,15 @@ const plugin = function (ctx, inject) {
     })
   } else if (process.client) {
     let clonedState = JSON.parse(JSON.stringify(nuxtState.state))
-    handleStoreHydration(clonedState, 'deserialize')
-    store.replaceState(clonedState)
+    let editedModules = handleStoreHydration(clonedState, 'deserialize')
+    for (const module in editedModules) {
+      const editedModule = editedModules[module]
+      try {
+        store.commit(`${editedModule}/replace`, clonedState[editedModule])
+      } catch (err) {
+        console.log(`[nuxt-jsorm]: no 'replace' mutation on vuex module '${editedModule}'.`)
+      }
+    }
   }
   ctx.$orm = orm
   inject('orm', orm)

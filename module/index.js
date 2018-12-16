@@ -1,6 +1,5 @@
 const { resolve, join } = require('path')
 const { existsSync, readdirSync } = require('fs')
-const fsExtra = require('fs-extra')
 const merge = require('lodash/merge')
 const filter = require('lodash/filter')
 const consola = require('consola')
@@ -11,13 +10,20 @@ module.exports = function (moduleOptions) {
   // Merge all option sources
   const options = merge({}, defaults, moduleOptions, this.options.orm)
   options.modelsRoot = resolve(this.options.srcDir, options.modelsRoot)
-  options.authTokenKey = this.options.auth.token.prefix + options.authStrategy
+  let tokenPrefix
+  if (this.options.auth && this.options.auth.token && this.options.auth.token.prefix) {
+    tokenPrefix = this.options.auth.token.prefix
+  } else {
+    tokenPrefix = '_token.'
+  }
+  options.authTokenKey = options.tokenPrefix + options.authStrategy
 
   // Validate and Normalize options
   validateOptions.call(this, options)
 
   // Process and normalize models
   options.models = processModels.call(this, options)
+
   // Copy plugin
   copyPlugin.call(this, options)
 }
