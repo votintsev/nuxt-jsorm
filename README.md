@@ -6,10 +6,11 @@
   <a href="https://www.npmjs.com/package/nuxt-jsorm"><img src="https://badgen.net/npm/license/nuxt-jsorm?icon=awesome" alt="License"></a>
 </p>
 
-> Inject JSORM models into Nuxt's context.
+> Inject JSORM models into Nuxt and Vue context, with support for SSR and Vuex state hydration.
 
 ## TODO:
 
- - README
- - provide examples
- - tests
+ - [ ] README
+ - [x] utilize @nuxtjs/auth config variables from nuxt.config.js
+ - [x] provide example
+ - [x] tests
