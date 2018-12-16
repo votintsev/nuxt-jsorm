@@ -23,14 +23,12 @@ const plugin = function (ctx, inject) {
   } else if (process.client) {
     let clonedState = JSON.parse(JSON.stringify(nuxtState.state))
     let editedModules = handleStoreHydration(clonedState, 'deserialize')
-    for (const module in editedModules) {
-      const editedModule = editedModules[module]
-      try {
-        store.commit(`${editedModule}/replace`, clonedState[editedModule])
-      } catch (err) {
-        console.error(`[nuxt-jsorm]: no 'replace' mutation on vuex module '${editedModule}'.`)
+    for (const vuexModule in nuxtState.state) {
+      if(!editedModules.includes(vuexModule)) {
+        clonedState[vuexModule] = nuxtState.state[vuexModule]
       }
     }
+    store.replaceState(clonedState)
   }
   ctx.$orm = orm
   inject('orm', orm)
