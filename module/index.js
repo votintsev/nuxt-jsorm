@@ -16,7 +16,10 @@ module.exports = function (moduleOptions) {
   } else {
     tokenPrefix = '_token.'
   }
-  options.authTokenKey = options.tokenPrefix + options.authStrategy
+  if (options.tokenPrefix) {
+    tokenPrefix = options.tokenPrefix
+  }
+  options.authTokenKey = tokenPrefix + options.authStrategy
 
   // Validate and Normalize options
   validateOptions.call(this, options)
