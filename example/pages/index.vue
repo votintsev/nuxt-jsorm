@@ -1,11 +1,15 @@
 <template>
-  <section class="container">
-    <template v-for="customer in customers">
-      <h1 :id="`customer-${customer.id}`" :key="customer.id" class="title">
-        Customer {{ customer.id }}: {{ customer.name }}
-      </h1>
-    </template>
-  </section>
+<section class="container">
+  <template v-for="customer in customers">
+    <h1
+      :id="`customer-${customer.id}`"
+      :key="customer.id"
+      class="title"
+    >
+      Customer {{ customer.id }}: {{ customer.name }}
+    </h1>
+  </template>
+</section>
 </template>
 
 <script>

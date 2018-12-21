@@ -1,5 +1,4 @@
 const pkg = require('./package')
-const resolve = require('path').resolve
 module.exports = {
   mode: 'universal',
 

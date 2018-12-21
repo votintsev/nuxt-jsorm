@@ -1,8 +1,6 @@
 const path = require('path')
 const puppeteer = require('puppeteer')
-const consola = require('consola')
 const { transferData } = require('./utils')
-const logger = consola.withScope('nuxt-jsorm')
 
 const PORT = 3030
 const BASE_URL = `http://localhost:${PORT}`

@@ -5,7 +5,6 @@ const glob = require('glob')
 const mockRoot = __dirname.replace(/\\/g, '/')
 const mockFilePattern = '.json'
 const mockRootPattern = mockRoot + '/**/*' + mockFilePattern
-const apiRoot = '/api'
 /* Read the directory tree according to the pattern specified above. */
 const files = glob.sync(mockRootPattern)
 
@@ -18,7 +17,7 @@ if (files && files.length > 0) {
   })
 }
 
-export default function (req, res, next) {
+export default function (req, res) {
   console.log('Requested /api' + req.url)
   if (!mappings[req.url]) {
     res.statusCode = 404

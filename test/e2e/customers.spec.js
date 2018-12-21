@@ -8,7 +8,7 @@ describe('Customers page', () => {
   })
 
   it('renders the customers page', async () => {
-    const elStr = await page.html().catch(err => logger.error(err))
+    const elStr = await page.html()
     expect(elStr).toBeTruthy()
     const customerOneText = await page.$text('#customer-1')
     expect(customerOneText.indexOf('Customer 1: John Doe')).toBeTruthy()

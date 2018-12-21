@@ -19,14 +19,14 @@ export const mutations = {
 }
 
 export const actions = {
-  all({ state, commit, getters }) {
+  all({ commit, getters }) {
     return this.$orm.Customer.all()
       .then((result) => {
         commit('cacheCustomers', result.data)
         return getters.customers
       })
   },
-  get({ state, commit }, customerId) {
+  get({ commit }, customerId) {
     return this.$orm.Customer.find(customerId)
       .then((result) => {
         commit('cacheCustomer', result.data)
