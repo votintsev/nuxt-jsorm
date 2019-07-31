@@ -32,7 +32,7 @@ module.exports = {
     '@babel/plugin-proposal-export-namespace-from',
     '@babel/plugin-proposal-numeric-separator',
     '@babel/plugin-proposal-throw-expressions',
-    'transform-vue-jsx'
+    '@vue/babel-plugin-transform-vue-jsx'
   ],
   'env': {
     'test': {
@@ -57,7 +57,7 @@ module.exports = {
         '@babel/plugin-proposal-export-namespace-from',
         '@babel/plugin-proposal-numeric-separator',
         '@babel/plugin-proposal-throw-expressions',
-        'transform-vue-jsx'
+        '@vue/babel-plugin-transform-vue-jsx'
       ]
     }
   }
