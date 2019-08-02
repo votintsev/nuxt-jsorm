@@ -1,17 +1,13 @@
 /* eslint-disable */
-import Vue from 'vue'
-import { JSORMVue } from 'jsorm-vue'
 import { handleStoreHydration } from './utils'
 import orm from './models'
+
 require('es6-promise').polyfill()
 require('isomorphic-fetch')
 
-Vue.use(JSORMVue)
-
-const plugin = function (ctx, inject) {
-  const { app, nuxtState, beforeNuxtRender, store } = ctx
-  if (app.$auth && app.$auth.loggedIn && app.$auth.$state) {
-    orm.<%= options.parentModel %>.jwt = app.$auth.$state['<%= options.authTokenKey %>']
+const plugin = function ({ nuxtState, beforeNuxtRender, store }, inject) {
+  if (store.state.auth && store.state.auth.loggedIn) {
+    orm.<%= options.parentModel %>.jwt = store.state.auth['<%= options.authTokenKey %>']
   }
 
   if (process.server) {
@@ -28,7 +24,6 @@ const plugin = function (ctx, inject) {
     }
     store.replaceState(clonedState)
   }
-  ctx.$orm = orm
   inject('orm', orm)
 }
 export default plugin

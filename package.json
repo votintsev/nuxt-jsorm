@@ -37,8 +37,7 @@
     "consola": "^2.9.0",
     "es6-promise": "^4.2.8",
     "isomorphic-fetch": "^2.2.1",
-    "jsorm": "^1.3.22",
-    "jsorm-vue": "^0.0.3"
+    "jsorm": "^1.3.22"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -69,7 +68,7 @@
     "eslint": "^6.1.0",
     "eslint-loader": "^2.2.1",
     "eslint-multiplexer": "^1.0.4",
-    "eslint-plugin-cypress": "^2.6.0",
+    "eslint-plugin-cypress": "^2.6.1",
     "eslint-plugin-ejs": "0.0.2",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.14.1",
