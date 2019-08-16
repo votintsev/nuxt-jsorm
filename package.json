@@ -28,7 +28,7 @@
     "lint": "npx eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:fix": "npx eslint --ext .js,.vue --ignore-path .gitignore . --fix",
     "postinstall": "npm run --silent setup:module || exit 0",
-    "setup:module": "node -e \"var fs=require('fs');if(fs.existsSync(__dirname.replace(/\\\\\\\\/g, '/') + '/setup.sh')){}else{process.exit(1);}\" && './setup.sh'",
+    "setup:module": "node -e \"var fs=require('fs');if(fs.existsSync(__dirname.replace(/\\\\\\\\/g, '/') + '/setup.sh')){}else{process.exit(1);}\" && './setup.sh' || exit 0",
     "test": "npm run test:e2e",
     "test:e2e": "jest --runInBand --forceExit --detectOpenHandles --config test/utils/e2e/jest.conf.js test/e2e",
     "test:e2e:debug": "node --inspect node_modules/.bin/jest --watch --runInBand --forceExit --detectOpenHandles --config test/utils/e2e/jest.conf.js test/e2e"
