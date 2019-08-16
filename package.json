@@ -34,7 +34,7 @@
     "test:e2e:debug": "node --inspect node_modules/.bin/jest --watch --runInBand --forceExit --detectOpenHandles --config test/utils/e2e/jest.conf.js test/e2e"
   },
   "dependencies": {
-    "consola": "^2.9.0",
+    "consola": "^2.10.1",
     "es6-promise": "^4.2.8",
     "isomorphic-fetch": "^2.2.1",
     "jsorm": "^1.3.22"
@@ -62,7 +62,7 @@
     "@vue/babel-plugin-transform-vue-jsx": "^1.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.2",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^24.9.0",
     "babel-plugin-dynamic-import-node": "^2.3.0",
     "codecov": "^3.5.0",
     "eslint": "^6.1.0",
@@ -71,11 +71,11 @@
     "eslint-plugin-cypress": "^2.6.1",
     "eslint-plugin-ejs": "0.0.2",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.14.1",
+    "eslint-plugin-jest": "^22.15.1",
     "eslint-plugin-vue": "^5.2.3",
     "express": "^4.17.1",
-    "jest": "^24.8.0",
-    "jest-environment-node": "^24.8.0",
+    "jest": "^24.9.0",
+    "jest-environment-node": "^24.9.0",
     "jest-serializer-vue": "^2.0.2",
     "nuxt": "^2.8.1",
     "puppeteer": "^1.19.0",
