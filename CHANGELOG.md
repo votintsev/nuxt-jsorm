@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.2](https://github.com/clickagy/nuxt-jsorm/compare/v1.4.1...v1.4.2) (2019-08-16)
+
+
+### Bug Fixes
+
+* setup:module command fails in CI ([c2b13c6](https://github.com/clickagy/nuxt-jsorm/commit/c2b13c6))
+
 ### [1.4.1](https://github.com/clickagy/nuxt-jsorm/compare/v1.4.0...v1.4.1) (2019-08-02)
 
 
