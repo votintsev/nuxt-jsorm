@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { JSORMBase } from 'jsorm'
+import { SpraypaintBase } from 'spraypaint'
 import orm from './models'
 
 const deserializeModel = function({ attributes, relationships, id, isPersisted, isMarkedForDestruction, isMarkedForDisassociation, errors, model }) {
@@ -36,14 +36,14 @@ const deserializeModel = function({ attributes, relationships, id, isPersisted, 
 }
 
 const deserialize = function(data, model) {
-  if(isJSORMObject(data)) {
-    if(data.isSerializedByNuxtJsOrm) {
+  if(isSpraypaintObject(data)) {
+    if(data.isSerializedByNuxtJSORM) {
       data = deserializeModel(data, model)
     }
   } else if(typeof data === "object") {
     for (const item in data) {
-      if(isJSORMObject(data[item])) {
-        if(data[item].isSerializedByNuxtJsOrm) {
+      if(isSpraypaintObject(data[item])) {
+        if(data[item].isSerializedByNuxtJSORM) {
           data[item] = deserializeModel(data[item], model)
         }
       }
@@ -61,7 +61,7 @@ const serializeModel = function({ attributes, relationships, id, isPersisted, is
     isPersisted,
     isMarkedForDestruction,
     isMarkedForDisassociation,
-    isSerializedByNuxtJsOrm: true,
+    isSerializedByNuxtJSORM: true,
     model: getClassName(),
     errors: Object.assign({}, errors)
   }
@@ -87,16 +87,16 @@ const serializeModel = function({ attributes, relationships, id, isPersisted, is
   return ret
 }
 
-const isJSORMObject = function(item) {
+const isSpraypaintObject = function(item) {
   if (typeof item !== "object") {
     return false
   }
 
-  if (typeof item.isSerializedByNuxtJsOrm !== "undefined") {
+  if (typeof item.isSerializedByNuxtJSORM !== "undefined") {
     return true
   }
 
-  if (item instanceof JSORMBase) {
+  if (item instanceof SpraypaintBase) {
     return true
   }
 
@@ -121,7 +121,7 @@ const handleStoreHydration = function(state, serializeFunction) {
         const accountData = moduleState.by_account[accountId]
         if (typeof accountData[storeModule] === "undefined") continue
         for (const itemId in accountData[storeModule]) {
-          if (!isJSORMObject(accountData[storeModule][itemId])) {
+          if (!isSpraypaintObject(accountData[storeModule][itemId])) {
             continue
           }
           state[storeModule].by_account[accountId][storeModule][itemId] = serializeFunction(accountData[storeModule][itemId], moduleState.jsorm)
@@ -129,14 +129,14 @@ const handleStoreHydration = function(state, serializeFunction) {
       }
     } else if (typeof moduleState[storeModule] !== "undefined") {
       for (const itemId in moduleState[storeModule]) {
-        if (!isJSORMObject(moduleState[storeModule][itemId])) {
+        if (!isSpraypaintObject(moduleState[storeModule][itemId])) {
           continue
         }
         state[storeModule][storeModule][itemId] = serializeFunction(moduleState[storeModule][itemId], moduleState.jsorm)
       }
     } else {
       for (const itemId in moduleState) {
-        if (!isJSORMObject(moduleState[itemId])) {
+        if (!isSpraypaintObject(moduleState[itemId])) {
           continue
         }
         state[storeModule][itemId] = serializeFunction(moduleState[itemId], moduleState.jsorm)
@@ -145,6 +145,6 @@ const handleStoreHydration = function(state, serializeFunction) {
   }
   return editedModules
 }
-const utils = { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }
-export { deserializeModel, deserialize, serializeModel, isJSORMObject, handleStoreHydration }
+const utils = { deserializeModel, deserialize, serializeModel, isSpraypaintObject, handleStoreHydration }
+export { deserializeModel, deserialize, serializeModel, isSpraypaintObject, handleStoreHydration }
 export default utils

@@ -1,5 +1,6 @@
 module.exports = {
   modelsRoot: 'models',
   parentModel: 'Base',
-  authStrategy: 'local'
+  authStrategy: 'local',
+  enableVuexHydration: true,
 }

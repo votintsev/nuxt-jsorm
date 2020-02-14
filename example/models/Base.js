@@ -1,6 +1,6 @@
-// JSORMBase gets passed in by plugin
-export default function (JSORMBase) {
-  return JSORMBase.extend({
+// SpraypaintBase gets passed in by plugin
+export default function (SpraypaintBase) {
+  return SpraypaintBase.extend({
     static: {
       baseUrl: `http://localhost:3030`,
       apiNamespace: '/api',
@@ -10,7 +10,7 @@ export default function (JSORMBase) {
         return token
       },
       // this should be set to the same localStorage key as @nuxtjs/auth
-      // will be read by JSORM on the client-side, while the
+      // will be read by Spraypaint on the client-side, while the
       // jwt property gets set on the server side
       jwtStorage: 'auth.token.local'
     }

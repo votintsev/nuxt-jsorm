@@ -7,10 +7,3 @@
 </p>
 
 > Inject JSORM models into Nuxt and Vue context, with support for SSR and Vuex state hydration.
-
-## TODO:
-
- - [ ] README
- - [x] utilize @nuxtjs/auth config variables from nuxt.config.js
- - [x] provide example
- - [x] tests

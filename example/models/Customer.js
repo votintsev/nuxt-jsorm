@@ -1,7 +1,7 @@
 // First argument is the Base model created from Base.js
-// Second argument is the jsorm package itself
-// For more usage examples check the JSORM documentation
-// https://jsonapi-suite.github.io/jsonapi_suite/js/home
+// Second argument is the Spraypaint package itself
+// For more usage examples check the Spraypaint documentation
+// https://www.graphiti.dev/js/index
 export default function (BaseModel, { attr }) {
   return BaseModel.extend({
     static: {
@@ -16,7 +16,7 @@ export default function (BaseModel, { attr }) {
       // the value returned by this function should be the
       // same name as the filename of the model, i.e for
       // Customer.js the value returned is 'Customer' or
-      // for Foo.js the value returned should be 'Foo'
+      // for FooBar.js the value returned should be 'FooBar'
       getClassName: () => 'Customer'
     }
   })

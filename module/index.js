@@ -7,33 +7,31 @@ const defaults = require('./defaults')
 const logger = consola.withScope('nuxt-jsorm')
 
 module.exports = function (moduleOptions) {
-  this.nuxt.hook('build:before', () => {
-    // Merge all option sources
-    const options = merge({}, defaults, moduleOptions, this.options.orm)
-    options.modelsRoot = resolve(this.options.srcDir, options.modelsRoot)
-    let tokenPrefix
-    if (this.options.auth && this.options.auth.token && this.options.auth.token.prefix) {
-      tokenPrefix = this.options.auth.token.prefix
-    } else {
-      tokenPrefix = '_token.'
-    }
-    if (options.tokenPrefix) {
-      tokenPrefix = options.tokenPrefix
-    }
-    options.authTokenKey = tokenPrefix + options.authStrategy
+  // Merge all option sources
+  const options = merge({}, defaults, moduleOptions, this.options.orm)
+  options.modelsRoot = resolve(this.options.srcDir, options.modelsRoot)
+  let tokenPrefix
+  if (this.options.auth && this.options.auth.token && this.options.auth.token.prefix) {
+    tokenPrefix = this.options.auth.token.prefix
+  } else {
+    tokenPrefix = '_token.'
+  }
+  if (options.tokenPrefix) {
+    tokenPrefix = options.tokenPrefix
+  }
+  options.authTokenKey = tokenPrefix + options.authStrategy
 
-    // Validate and Normalize options
-    validateOptions.call(this, options)
+  // Validate and Normalize options
+  validateOptions.call(this, options)
 
-    // Process and normalize models
-    options.models = processModels.call(this, options)
+  // Process and normalize models
+  options.models = processModels.call(this, options)
 
-    // Copy plugin
-    copyPlugin.call(this, options)
-  })
+  // Copy plugin
+  copyPlugin.call(this, options)
 }
 
-function validateOptions(options) {
+function validateOptions (options) {
   if (!existsSync(options.modelsRoot)) {
     logger.fatal(`No models found in ${options.modelsRoot}.`)
   }
@@ -42,31 +40,31 @@ function validateOptions(options) {
   }
 }
 
-function copyPlugin(options) {
+function copyPlugin (options) {
   this.addTemplate({
     src: resolve(__dirname, 'dynamic_models.js'),
     fileName: join('orm', 'models.js'),
-    options
+    options,
   })
 
   this.addTemplate({
     src: resolve(__dirname, 'utils.js'),
     fileName: join('orm', 'utils.js'),
-    options
+    options,
   })
 
   // Copy orm plugin
   const pluginFile = this.addTemplate({
     src: resolve(__dirname, 'plugin.js'),
     fileName: join('orm', 'plugin.js'),
-    options
+    options,
   })
-  // if (!this.options.auth.plugins) this.options.auth.plugins = []
-  // this.options.auth.plugins.push(resolve(this.options.buildDir, pluginFile.dst))
-  this.options.plugins.push(resolve(this.options.buildDir, pluginFile.dst))
+  if (!this.options.auth.plugins) { this.options.auth.plugins = [] }
+  this.options.auth.plugins.push(resolve(this.options.buildDir, pluginFile.dst))
+  // this.options.plugins.push(resolve(this.options.buildDir, pluginFile.dst))
 }
 
-function processModels(options) {
+function processModels (options) {
   const models = []
 
   if (!existsSync(options.modelsRoot)) {
@@ -78,7 +76,7 @@ function processModels(options) {
     models.push({
       model: fileNameWithoutExtension,
       path: resolve(options.modelsRoot, file),
-      base: (fileNameWithoutExtension === options.parentModel)
+      base: (fileNameWithoutExtension === options.parentModel),
     })
   }
   if (filter(models, o => o.model === options.parentModel).length < 1) { logger.fatal(`No ${options.parentModel} model found.`) }

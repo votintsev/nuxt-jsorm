@@ -1,9 +1,8 @@
 import Vue from 'vue'
-import { deserialize } from '~/plugins/orm'
 
 export const state = () => ({
   customers: {},
-  // required for hydration of JSORM
+  // required for hydration of Spraypaint
   jsorm: 'Customer'
 })
 
@@ -20,24 +19,24 @@ export const mutations = {
 
 export const actions = {
   all({ commit, getters }) {
-    return this.$orm.Customer.all()
+    return this.$orm.models.Customer.all()
       .then((result) => {
         commit('cacheCustomers', result.data)
         return getters.customers
       })
   },
   get({ commit }, customerId) {
-    return this.$orm.Customer.find(customerId)
+    return this.$orm.models.Customer.find(customerId)
       .then((result) => {
         commit('cacheCustomer', result.data)
         return getters.customer(customerId)
       })
   },
   create({ commit, getters }, customer) {
-    let Customer = new this.$orm.Customer(customer)
+    let Customer = new this.$orm.models.Customer(customer)
     return Customer.save()
       .then(async () => {
-        Customer = await this.$orm.Customer.find(Customer.id).then(res => res.data)
+        Customer = await this.$orm.models.Customer.find(Customer.id).then(res => res.data)
         commit('cacheCustomer', Customer)
         return getters.customer(Customer.id)
       })
@@ -50,10 +49,10 @@ export const getters = {
       return {}
     }
 
-    return deserialize(state.customers[id])
+    return Vue.prototype.$nuxt.context.app.$orm.utils.deserialize(state.customers[id])
   },
   customers(state) {
-    const customers = deserialize(state.customers)
+    const customers = Vue.prototype.$nuxt.context.app.$orm.utils.deserialize(state.customers)
     return Object.keys(customers).map((k) => {
       return customers[k]
     })

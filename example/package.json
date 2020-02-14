@@ -9,10 +9,10 @@
     "install-link": "npm install && npm link nuxt-jsorm"
   },
   "dependencies": {
-    "@nuxtjs/auth": "^4.5.3",
-    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/auth": "^4.8.5",
+    "@nuxtjs/axios": "^5.9.5",
     "isomorphic-fetch": "^2.2.1",
-    "nuxt": "^2.0.0",
-    "nuxt-jsorm": "^1.1.10"
+    "nuxt": "^2.11.0",
+    "nuxt-jsorm": "^2.0.0"
   }
 }

@@ -25,8 +25,8 @@ module.exports = {
   */
   modules: [
     '@nuxtjs/axios',
+    'nuxt-jsorm', // must come before @nuxtjs/auth
     '@nuxtjs/auth',
-    'nuxt-jsorm',
   ],
 
   axios: {
