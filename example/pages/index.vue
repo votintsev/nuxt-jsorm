@@ -16,11 +16,11 @@
 import { createNamespacedHelpers } from 'vuex'
 const { mapGetters } = createNamespacedHelpers('customers')
 export default {
-  computed: {
-    ...mapGetters(['customers'])
-  },
   async fetch({ store }) {
     await store.dispatch('customers/all')
+  },
+  computed: {
+    ...mapGetters(['customers'])
   }
 }
 </script>
