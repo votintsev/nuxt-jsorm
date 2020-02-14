@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/clickagy/nuxt-jsorm/compare/v1.4.3...v2.0.0) (2020-02-14)
+
+
+### Features
+
+* replace jsorm with spraypaint ([d5a4a67](https://github.com/clickagy/nuxt-jsorm/commit/d5a4a67cccf238da823f693ad09ea5c602118ffd))
+
 ### [1.4.3](https://github.com/clickagy/nuxt-jsorm/compare/v1.4.2...v1.4.3) (2019-08-16)
 
 ### [1.4.2](https://github.com/clickagy/nuxt-jsorm/compare/v1.4.1...v1.4.2) (2019-08-16)
