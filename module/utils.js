@@ -27,7 +27,7 @@ const deserializeModel = function({ attributes, relationships, id, isPersisted, 
 
   let ret = new orm[model](attrs)
   ret.id = id
-  // ret.isPersisted = isPersisted
+  ret.isPersisted = isPersisted
   ret.isMarkedForDestruction = isMarkedForDestruction
   ret.isMarkedForDisassociation = isMarkedForDisassociation
   ret.errors = Object.assign({}, errors)
