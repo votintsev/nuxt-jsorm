@@ -7,7 +7,7 @@ const deserializeModel = function ( { attributes, relationships, id, isPersisted
 
   if ( Object.keys( relationships ).length > 0 ) {
     for ( const relationship in relationships ) {
-      if ( typeof retRelationships[relationship] === "undefined" ) {
+      if ( typeof retRelationships[relationship] === 'undefined' ) {
         retRelationships[relationship] = []
       }
 
@@ -71,7 +71,7 @@ const serializeModel = function ( { attributes, relationships, id, isPersisted, 
 
 
   for ( const relationship in relationships ) {
-    if ( typeof ret.relationships[relationship] === "undefined" ) {
+    if ( typeof ret.relationships[relationship] === 'undefined' ) {
       ret.relationships[relationship] = []
     }
     const relatedItems = relationships[relationship]
@@ -92,7 +92,7 @@ const isSpraypaintObject = function ( item ) {
     return false
   }
 
-  if ( typeof item.isSerializedByNuxtJSORM !== "undefined" ) {
+  if ( typeof item.isSerializedByNuxtJSORM !== 'undefined' ) {
     return true
   }
 
@@ -139,7 +139,7 @@ const handleStoreHydration = function ( state, serializeFunction ) {
       continue
     }
     editedModules.push( storeModule )
-    if ( typeof moduleState.jsormDeep !== "undefined" && moduleState.jsormDeep ) {
+    if ( typeof moduleState.jsormDeep !== 'undefined' && moduleState.jsormDeep ) {
       for ( const stateItemId in moduleState ) {
         if ( Array.isArray( moduleState[stateItemId] ) || typeof moduleState[stateItemId] === 'object' ) {
           iterateAndSerializeStoreItems( state[storeModule][stateItemId], serializeFunction )
@@ -147,30 +147,46 @@ const handleStoreHydration = function ( state, serializeFunction ) {
           state[storeModule][stateItemId] = serializeFunction( moduleState[stateItemId], moduleState.jsorm )
         }
       }
-    } else if ( typeof moduleState.by_account !== "undefined" ) {
-      for ( const accountId in moduleState.by_account ) {
-        const accountData = moduleState.by_account[accountId]
-        if ( typeof accountData[storeModule] === "undefined" ) continue
-        for ( const itemId in accountData[storeModule] ) {
-          if ( !isSpraypaintObject( accountData[storeModule][itemId] ) ) {
+    } else {
+      let somethingHydrated = false
+      if ( typeof moduleState.by_account !== 'undefined' ) {
+        for ( const accountId in moduleState.by_account ) {
+          const accountData = moduleState.by_account[accountId]
+          if ( typeof accountData[storeModule] === 'undefined' ) continue
+          for ( const itemId in accountData[storeModule] ) {
+            if ( !isSpraypaintObject( accountData[storeModule][itemId] ) ) {
+              continue
+            }
+            somethingHydrated = true
+            state[storeModule].by_account[accountId][storeModule][itemId] = serializeFunction( accountData[storeModule][itemId], moduleState.jsorm )
+          }
+        }
+      }
+      if ( typeof moduleState[storeModule] !== 'undefined' ) {
+        for ( const itemId in moduleState[storeModule] ) {
+          if ( !isSpraypaintObject( moduleState[storeModule][itemId] ) ) {
             continue
           }
-          state[storeModule].by_account[accountId][storeModule][itemId] = serializeFunction( accountData[storeModule][itemId], moduleState.jsorm )
+          somethingHydrated = true
+          state[storeModule][storeModule][itemId] = serializeFunction( moduleState[storeModule][itemId], moduleState.jsorm )
         }
       }
-    } else if ( typeof moduleState[storeModule] !== "undefined" ) {
-      for ( const itemId in moduleState[storeModule] ) {
-        if ( !isSpraypaintObject( moduleState[storeModule][itemId] ) ) {
-          continue
+      if ( typeof moduleState.paginated !== 'undefined' ) {
+        for ( const itemId in moduleState.paginated ) {
+          if ( !isSpraypaintObject( moduleState.paginated[itemId] ) ) {
+            continue
+          }
+          somethingHydrated = true
+          state[storeModule].paginated[itemId] = serializeFunction( moduleState.paginated[itemId], moduleState.jsorm )
         }
-        state[storeModule][storeModule][itemId] = serializeFunction( moduleState[storeModule][itemId], moduleState.jsorm )
       }
-    } else {
-      for ( const itemId in moduleState ) {
-        if ( !isSpraypaintObject( moduleState[itemId] ) ) {
-          continue
+      if (!somethingHydrated) {
+        for ( const itemId in moduleState ) {
+          if ( !isSpraypaintObject( moduleState[itemId] ) ) {
+            continue
+          }
+          state[storeModule][itemId] = serializeFunction( moduleState[itemId], moduleState.jsorm )
         }
-        state[storeModule][itemId] = serializeFunction( moduleState[itemId], moduleState.jsorm )
       }
     }
   }
