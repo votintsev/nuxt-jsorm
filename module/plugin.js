@@ -21,7 +21,7 @@ const plugin = function ( nuxtContext, inject ) {
   middlewareConfigured = true
               <% if ( typeof options.middleware[item][key] === 'function' ) { %>
   const middlewareItem<%= item.charAt(0).toUpperCase() + item.slice(1) + key %> = <%= options.middleware[item][key] %>
-  middlewareStack.<%= item %>.push( middlewareItem<%= key %>(nuxtContext) )
+  middlewareStack.<%= item %>.push( middlewareItem<%= item.charAt(0).toUpperCase() + item.slice(1) + key %>(nuxtContext) )
             <% }
           }
         }
