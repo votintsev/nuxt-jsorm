@@ -3,4 +3,8 @@ module.exports = {
   parentModel: 'Base',
   authStrategy: 'local',
   enableVuexHydration: true,
+  middleware: {
+    afterFilters: [],
+    beforeFilters: [],
+  },
 }
