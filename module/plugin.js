@@ -8,30 +8,29 @@ require('isomorphic-fetch')
 const plugin = function ( nuxtContext, inject ) {
   const { nuxtState, beforeNuxtRender, store } = nuxtContext
   const orm = { models, utils }
-  const middleware = <%= options.middleware %>
   if (store && store.state && store.state.auth && store.state.auth.loggedIn) {
     orm.models.<%= options.parentModel %>.jwt = store.state.auth['<%= options.authTokenKey %>']
   }
-
-  if ((middleware && middleware.afterFilters && middleware.afterFilters.length) || (middleware && middleware.beforeFilters && middleware.beforeFilters.length)) {
-    const middlewareStack = new MiddlewareStack()
-    let middlewareConfigured = false
-    for ( const item in middleware ) {
-      if ( Object.prototype.hasOwnProperty.call( middleware, item ) ) {
-        if ( middleware[item] && middleware[item].length && Array.isArray( middleware[item] ) ) {
-          middleware[item].forEach( function ( key ) {
-            middlewareConfigured = true
-            if ( typeof middleware[item][key] === 'function' ) {
-              middlewareStack[item].push( middleware[item][key](nuxtContext) )
-            }
-          } )
+  <% if ((options.middleware && options.middleware.afterFilters && options.middleware.afterFilters.length) || (options.middleware && options.middleware.beforeFilters && options.middleware.beforeFilters.length)) { %>
+  const middlewareStack = new MiddlewareStack()
+  let middlewareConfigured = false
+    <% for ( const item in options.middleware ) {
+      if ( Object.prototype.hasOwnProperty.call( options.middleware, item ) ) {
+        if ( options.middleware[item] && options.middleware[item].length && Array.isArray( options.middleware[item] ) ) {
+          for ( const key in options.middleware[item] ) { %>
+  middlewareConfigured = true
+              <% if ( typeof options.middleware[item][key] === 'function' ) { %>
+  const middlewareItem<%= key %> = <%= options.middleware[item][key] %>
+  middlewareStack.<%= item %>.push( middlewareItem<%= key %>(nuxtContext) )
+            <% }
+          }
         }
       }
-    }
-    if ( middlewareConfigured ) {
-      orm.models.<%= options.parentModel %>.middlewareStack = middlewareStack
-    }
+    } %>
+  if ( middlewareConfigured ) {
+    orm.models.<%= options.parentModel %>.middlewareStack = middlewareStack
   }
+  <% } %>
 
   inject('orm', orm)
 
