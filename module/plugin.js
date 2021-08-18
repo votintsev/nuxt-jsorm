@@ -32,7 +32,11 @@ const plugin = function ( nuxtContext, inject ) {
   }
   <% } %>
 
+  nuxtContext.$orm = orm
   inject('orm', orm)
+  if (Vue.prototype.$orm === undefined) {
+    Vue.prototype.$orm = orm
+  }
 
   <% if (options.enableVuexHydration) { %>
     if (process.server) {
