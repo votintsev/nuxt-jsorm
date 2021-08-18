@@ -1,6 +1,7 @@
 /* eslint-disable */
 import utils from './utils'
 import models from './models'
+import Vue from 'vue'
 import { MiddlewareStack } from 'spraypaint'
 require('es6-promise').polyfill()
 require('isomorphic-fetch')
